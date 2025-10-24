@@ -1,0 +1,107 @@
+﻿@*@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+*@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar accesible y clara -->
+        <nav class="col-md-2 d-none d-md-block sidebar bg-light border-end" aria-label="Menú lateral">
+            <div class="position-sticky pt-3">
+                <!-- Encabezado -->
+                <div class="sidebar-header text-center mb-4">
+                    <h4 class="fw-bold text-primary">Dashboard</h4>
+                </div>
+                
+                <!-- Navegación principal -->
+                <ul class="nav flex-column" role="menu">
+                    <li class="nav-item mb-2">
+                        <a class="nav-link @(ViewData["Title"]?.ToString() == "Home" ? "active text-primary fw-bold" : "text-dark")" 
+                           href="@Url.Action("Index", "Home")" role="menuitem">
+                            <i class="fas fa-home me-2"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link @(ViewData["Title"]?.ToString() == "Agregar Pedido" ? "active text-primary fw-bold" : "text-dark")" 
+                           href="@Url.Action("Vista", "Home")" role="menuitem">
+                            <i class="fas fa-plus me-2"></i> Agregar Pedido
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Contenido principal -->
+        <main class="col-md-10 ms-sm-auto px-md-4">
+            <header class="header p-4 mb-4 bg-white shadow-sm rounded d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">📊 Bienvenido a la página principal</h2>
+                <!-- Botón de cerrar sesión para buena UX -->
+                <a href="@Url.Action("Logout", "Account")" class="btn btn-sm btn-outline-danger">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                </a>
+            </header>
+
+            <!-- KPIs -->
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="card kpi-card shadow-sm text-center">
+                        <i class="fas fa-dollar-sign kpi-icon text-success"></i>
+                        <h5>Ventas</h5>
+                        <h3>$12,345</h3>
+                        <p class="text-success fw-bold">+15% este mes</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card kpi-card shadow-sm text-center">
+                        <i class="fas fa-shopping-cart kpi-icon text-primary"></i>
+                        <h5>Pedidos</h5>
+                        <h3>240</h3>
+                        <p class="text-primary fw-bold">+8% respecto a ayer</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card kpi-card shadow-sm text-center">
+                        <i class="fas fa-users kpi-icon text-warning"></i>
+                        <h5>Clientes</h5>
+                        <h3>1200</h3>
+                        <p class="text-danger fw-bold">-5% esta semana</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card kpi-card shadow-sm text-center">
+                        <i class="fas fa-chart-line kpi-icon text-info"></i>
+                        <h5>Ingresos</h5>
+                        <h3>$45,678</h3>
+                        <p class="text-success fw-bold">+12% en el mes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficos -->
+            <div class="row mt-4 g-3">
+                <div class="col-md-6">
+                    <div class="card chart-container shadow-sm p-3">
+                        <h5 class="text-center">Ingresos Mensuales</h5>
+                        <canvas id="chartIngresos" aria-label="Gráfico de ingresos mensuales" role="img"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card chart-container shadow-sm p-3">
+                        <h5 class="text-center">Pedidos por Categoría</h5>
+                        <canvas id="chartPedidos" aria-label="Gráfico de pedidos por categoría" role="img"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

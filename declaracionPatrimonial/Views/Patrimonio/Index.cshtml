@@ -1,0 +1,33 @@
+@model IEnumerable<declaracionPatrimonial.ViewModel.PatrimonioViewModel>
+
+@{
+    ViewData["Title"] = "Resumen de Patrimonio";
+}
+
+<div class="container py-5">
+    <h2 class="mb-4 text-center text-primary fw-bold">Resumen de Patrimonio del Ciudadano</h2>
+
+    <table class="table table-hover table-bordered shadow-sm">
+        <thead class="table-light text-center">
+            <tr>
+                <th>Usuario</th>
+                <th>Total Activos (Q)</th>
+                <th>Total Pasivos (Q)</th>
+                <th>Patrimonio Neto (Q)</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.NombreUsuario</td>
+                    <td>@item.TotalActivos.ToString("N2")</td>
+                    <td>@item.TotalPasivos.ToString("N2")</td>
+                    <td class="fw-bold @(item.Patrimonio >= 0 ? "text-success" : "text-danger")">
+                        @item.Patrimonio.ToString("N2")
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

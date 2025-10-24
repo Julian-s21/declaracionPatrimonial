@@ -1,0 +1,296 @@
+@model List<declaracionPatrimonial.Models.otroPasivo>
+
+@{
+    ViewData["Title"] = "Otros Pasivos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    decimal totalPasivos = Model?.Sum(p => p.Cantidad_aprobadaPasivo) ?? 0;
+    int totalRegistros = Model?.Count ?? 0;
+    var usuario = Model?.FirstOrDefault()?.Usuario;
+}
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet" />
+
+<link href="https://unpkg.com/intro.js/minified/introjs.min.css" rel="stylesheet" />
+
+<div class="container py-5" style="font-family: 'Inter', sans-serif;">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a asp-controller="Home" asp-action="Index" class="text-decoration-none text-primary fw-semibold">
+                    <i class="bi bi-house-door me-1"></i> Inicio
+                </a>
+            </li>
+            <li class="breadcrumb-item active fw-semibold text-dark" aria-current="page">Otros Pasivos</li>
+        </ol>
+    </nav>
+
+    <!-- Bienvenida -->
+    <div class="alert alert-light border-start border-4 border-primary shadow-sm rounded-4 mb-4 d-flex justify-content-between align-items-center flex-wrap">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-person-circle text-primary fs-3 me-3"></i>
+            <div>
+                <h5 class="mb-0 fw-semibold" style="font-family:'Poppins', sans-serif;">
+                    Bienvenido, @usuario?.Nombre_Usuario @usuario?.Apellido_Usuario
+                </h5>
+                <small class="text-muted">Gestiona tus pasivos de manera sencilla y organizada.</small>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+            <button id="btnTour" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" title="Ver guía interactiva">
+                <i class="bi bi-info-circle me-1"></i> Guía
+            </button>
+            <a asp-controller="Usuario" asp-action="Logout" class="btn btn-light btn-sm" title="Cerrar sesión">
+                <i class="bi bi-box-arrow-right me-1"></i> Salir
+            </a>
+        </div>
+    </div>
+
+    <!-- Panel principal -->
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="card-header text-white py-4 px-4 d-flex justify-content-between align-items-center flex-wrap"
+             style="background: linear-gradient(90deg, #6a11cb, #2575fc);">
+            <h3 class="mb-0 fw-semibold d-flex align-items-center">
+                <i class="bi bi-wallet2 me-2 fs-4"></i> Gestión de Otros Pasivos
+            </h3>
+
+            <a asp-controller="OtroPasivo" asp-action="Create"
+               class="btn btn-light btn-sm fw-semibold shadow-sm px-3 mt-2 mt-md-0"
+               id="btnNuevoPasivo" title="Registrar nuevo pasivo" role="button">
+                <i class="bi bi-plus-circle me-1"></i> Nuevo Pasivo
+            </a>
+        </div>
+
+        <div class="card-body p-4 bg-light">
+
+                    <!-- Filtros -->
+        <div class="row mb-4 g-3 align-items-end">
+            <div class="col-lg-4 col-md-6">
+                <label class="form-label fw-semibold text-secondary">Buscar pasivo</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="bi bi-search text-muted"></i>
+                    </span>
+                    <input type="text" id="searchInput"
+                        class="form-control border-start-0 shadow-sm"
+                        placeholder="Buscar por cualquier campo..." />
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-3">
+                <label class="form-label fw-semibold text-secondary">Filtrar por Cuenta / Entidad</label>
+                <select id="filtroCuenta" class="form-select shadow-sm">
+                    <option value="">Todos</option>
+                    @foreach (var cuenta in (Model ?? Enumerable.Empty<declaracionPatrimonial.Models.otroPasivo>())
+                        .Select(p => p.cuentaBancaria?.Numero_cuentaBancaria)
+                        .Where(c => !string.IsNullOrEmpty(c))
+                        .Distinct())
+                    {
+                        <option value="@cuenta">@cuenta</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-lg-4 col-md-3">
+                <label class="form-label fw-semibold text-secondary">Filtrar por Motivo</label>
+                <select id="filtroMotivo" class="form-select shadow-sm">
+                    <option value="">Todos</option>
+                    @foreach (var motivo in (Model ?? Enumerable.Empty<declaracionPatrimonial.Models.otroPasivo>())
+                        .Select(p => p.Motivo_Pasivo)
+                        .Where(m => !string.IsNullOrEmpty(m))
+                        .Distinct())
+                    {
+                        <option value="@motivo">@motivo</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+
+            <!-- Resumen -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-5 mb-3 mb-md-0">
+                    <div class="bg-white p-3 rounded shadow-sm border-start border-4 border-primary text-center">
+                        <span class="fw-semibold text-muted me-2">
+                            <i class="bi bi-list-check me-1"></i> Total pasivos:
+                        </span>
+                        <span class="fw-bold">@totalRegistros</span>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="bg-white p-3 rounded shadow-sm border-start border-4 border-success text-center">
+                        <span class="fw-semibold text-muted me-2">
+                            <i class="bi bi-cash-coin me-1"></i> Total aprobado:
+                        </span>
+                        <span class="fw-bold text-success">Q @totalPasivos.ToString("N2")</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla -->
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle bg-white rounded-4 shadow-sm">
+                        <thead class="text-white text-center" style="background: linear-gradient(90deg, #6a11cb, #2575fc);">
+                            <tr>
+                                <th scope="col">Número de Cuenta / Entidad</th>
+                                <th scope="col">Cantidad Aprobada (Q)</th>
+                                <th scope="col">Saldo en Cuenta (Q)</th>
+                                <th scope="col">Motivo del Pasivo</th>
+                                <th scope="col" class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var pasivo in Model)
+                            {
+                                <tr>
+                                    <td>@pasivo.cuentaBancaria?.Numero_cuentaBancaria</td>
+                                    <td class="text-success fw-bold">Q @pasivo.Cantidad_aprobadaPasivo.ToString("N2")</td>
+                                    <td class="text-primary fw-semibold">
+                                        Q @(pasivo.cuentaBancaria?.Saldo_cuentaBancaria.ToString("N2") ?? "0.00")
+                                    </td>
+                                    <td>@pasivo.Motivo_Pasivo</td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <form asp-action="LoadEdit" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@pasivo.IDPasivo" />
+                                                <button type="submit" class="btn btn-outline-success btn-sm rounded-circle shadow-sm" data-bs-toggle="tooltip" title="Editar pasivo">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                            </form>
+
+                                            <form asp-action="DeleteConfirmed" method="post" class="d-inline" id="formEliminar-@pasivo.IDPasivo">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@pasivo.IDPasivo" />
+                                                <button type="button"
+                                                        onclick="confirmarEliminacion('formEliminar-@pasivo.IDPasivo')"
+                                                        class="btn btn-outline-danger btn-sm rounded-circle shadow-sm"
+                                                        data-bs-toggle="tooltip" title="Eliminar pasivo">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-info-circle text-primary fs-3"></i>
+                    <p class="mt-2 mb-0 text-muted fw-semibold">No hay pasivos registrados.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Inicializar tooltips
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
+
+        // Filtrado de tabla
+        const searchInput = document.getElementById('searchInput');
+        const filtroCuenta = document.getElementById('filtroCuenta');
+        const filtroMotivo = document.getElementById('filtroMotivo');
+
+        function filtrarTabla() {
+            const term = searchInput.value.toLowerCase();
+            const cuentaSeleccionada = filtroCuenta.value;
+            const motivoSeleccionado = filtroMotivo.value;
+
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const texto = row.textContent.toLowerCase();
+                const cuenta = row.cells[0].textContent.trim();
+                const motivo = row.cells[3].textContent.trim();
+
+                const coincideTexto = texto.includes(term);
+                const coincideCuenta = !cuentaSeleccionada || cuenta === cuentaSeleccionada;
+                const coincideMotivo = !motivoSeleccionado || motivo === motivoSeleccionado;
+
+                row.style.display = (coincideTexto && coincideCuenta && coincideMotivo) ? '' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input', () => setTimeout(filtrarTabla, 200));
+        filtroCuenta.addEventListener('change', filtrarTabla);
+        filtroMotivo.addEventListener('change', filtrarTabla);
+
+        // Confirmar eliminación
+        function confirmarEliminacion(formId) {
+            Swal.fire({
+                title: "¿Eliminar pasivo?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#2575fc",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(formId).submit();
+                }
+            });
+        }
+
+        // Tour interactivo con Intro.js
+        (() => {
+            const tourKey = 'otrosPasivos_tour_v1';
+            const pasos = [
+                {
+                    element: '#btnNuevoPasivo',
+                    intro: 'Haz clic aquí para registrar un nuevo pasivo.',
+                    position: 'bottom'
+                },
+                {
+                    element: '.row.mb-4.g-3.align-items-end',
+                    intro: 'Usa estos filtros para buscar y filtrar tus pasivos.',
+                    position: 'right'
+                },
+                {
+                    element: 'table',
+                    intro: 'Aquí puedes ver todos tus pasivos registrados y usar los botones de acción para editar o eliminar.',
+                    position: 'top'
+                }
+            ];
+
+            function iniciarTour() {
+                const intro = introJs();
+                intro.setOptions({
+                    steps: pasos,
+                    showProgress: true,
+                    exitOnEsc: true,
+                    exitOnOverlayClick: false,
+                    nextLabel: 'Siguiente',
+                    prevLabel: 'Atrás',
+                    doneLabel: 'Finalizar'
+                });
+
+                intro.oncomplete(() => localStorage.setItem(tourKey, 'done'));
+                intro.onexit(() => localStorage.setItem(tourKey, 'done'));
+                intro.start();
+            }
+
+            document.getElementById('btnTour')?.addEventListener('click', iniciarTour);
+
+            // Ejecutar tour automáticamente la primera vez
+            if (!localStorage.getItem(tourKey)) {
+                setTimeout(iniciarTour, 600);
+            }
+        })();
+    </script>
+}

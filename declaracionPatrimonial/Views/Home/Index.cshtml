@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="container my-4">
+
+    <!-- Hero Carousel -->
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+
+        <!-- Indicadores -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+        </div>
+
+        <!-- Slides -->
+        <div class="carousel-inner rounded shadow">
+
+            <!-- Slide 1 -->
+            <div class="carousel-item active">
+                <div class="row g-0 align-items-center">
+                    <div class="col-lg-6">
+                        <img src="~/images/hero1.jpeg" class="d-block w-100 h-100 object-fit-cover" alt="Noticia 1">
+                    </div>
+                    <div class="col-lg-6 p-4">
+                        <h2 class="fw-bold mb-3">TSE coordina con representantes de partidos políticos la logística de las Elecciones Generales 2027</h2>
+                        <p class="text-muted mb-4">El Tribunal Supremo Electoral desarrolla reuniones técnicas con delegados de los partidos políticos, con el fin de garantizar procesos transparentes y ordenados. </p>
+                
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <div class="row g-0 align-items-center">
+                    <div class="col-lg-6">
+                        <img src="~/images/hero2.jpeg" class="d-block w-100 h-100 object-fit-cover" alt="Noticia 2">
+                    </div>
+                    <div class="col-lg-6 p-4">
+                        <h2 class="fw-bold mb-3">Con fervor cívico, TSE realiza su antorcha institucional</h2>
+                        <p class="text-muted mb-4">En conmemoración de las fiestas patrias, el personal del TSE participó en la tradicional carrera de la antorcha, fortaleciendo los valores democráticos y ciudadanos.</p>
+                    
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-item">
+                <div class="row g-0 align-items-center">
+                    <div class="col-lg-6">
+                        <img src="~/images/hero3.jpg" class="d-block w-100 h-100 object-fit-cover" alt="Noticia 3">
+                    </div>
+                    <div class="col-lg-6 p-4">
+                        <h2 class="fw-bold mb-3">TSE fortalece programas de educación cívica y participación ciudadana</h2>
+                        <p class="text-muted mb-4">La institución desarrolla capacitaciones y talleres en distintos departamentos, fomentando el compromiso ciudadano con la democracia.</p>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controles -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,210 @@
+@model declaracionPatrimonial.Models.cuentaBancaria
+
+@{
+    ViewData["Title"] = "Editar Cuenta Bancaria";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+
+    <!-- ENCABEZADO -->
+    <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-4 border border-gray-100 p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold mb-1 text-gradient"
+                    style="background: linear-gradient(90deg, #6a11cb, #2575fc);
+                           -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Editar Cuenta Bancaria
+                </h2>
+                <p class="text-muted mb-0">Actualiza los datos de la cuenta con validaciones en tiempo real.</p>
+            </div>
+            <a asp-action="Index" class="btn btn-outline-primary rounded-pill fw-semibold shadow-sm">
+                <i class="bi bi-arrow-left me-1"></i> Volver
+            </a>
+        </div>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="bg-white p-5 shadow-lg rounded-4 border-0">
+        <form asp-action="Edit" method="post" id="formCuentaBancariaEdit" novalidate autocomplete="off">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="IDCuentaBancaria" />
+
+            <div class="row g-4">
+
+                <!-- Número de cuenta -->
+                <div class="col-md-6">
+                    <label asp-for="Numero_cuentaBancaria" class="form-label fw-semibold">Número de cuenta</label>
+                    <input asp-for="Numero_cuentaBancaria" id="Numero_cuentaBancaria"
+                           class="form-control border-0 shadow-sm rounded-3 focus-ring"
+                           placeholder="Ej. 123456789012" minlength="6" maxlength="20" />
+                    <span class="invalid-feedback d-block small"></span>
+                </div>
+
+                <!-- Saldo -->
+                <div class="col-md-6">
+                    <label asp-for="Saldo_cuentaBancaria" class="form-label fw-semibold">Saldo disponible (Q)</label>
+                    <input asp-for="Saldo_cuentaBancaria" id="Saldo_cuentaBancaria"
+                           class="form-control border-0 shadow-sm rounded-3 focus-ring"
+                           type="number" min="0" step="0.01" placeholder="Ej. 1500.00" />
+                    <span class="invalid-feedback d-block small"></span>
+                </div>
+
+                <!-- Banco -->
+                <div class="col-md-6">
+                    <label asp-for="IDBanco" class="form-label fw-semibold">Banco</label>
+                    <select asp-for="IDBanco" id="IDBanco"
+                            class="form-select border-0 shadow-sm rounded-3 focus-ring"
+                            asp-items="@(new SelectList(ViewBag.Bancos, "IDBanco", "Nombre_Banco", Model.IDBanco))">
+                        <option value="">Seleccione un banco</option>
+                    </select>
+                    <span class="invalid-feedback d-block small"></span>
+                </div>
+
+                <!-- Tipo de cuenta -->
+                <div class="col-md-6">
+                    <label asp-for="IDtipoCuenta" class="form-label fw-semibold">Tipo de cuenta</label>
+                    <select asp-for="IDtipoCuenta" id="IDtipoCuenta"
+                            class="form-select border-0 shadow-sm rounded-3 focus-ring"
+                            asp-items="@(new SelectList(ViewBag.TiposCuenta, "IDtipoCuenta", "Nombre_tipoCuenta", Model.IDtipoCuenta))">
+                        <option value="">Seleccione tipo de cuenta</option>
+                    </select>
+                    <span class="invalid-feedback d-block small"></span>
+                </div>
+            </div>
+
+            <!-- RESUMEN DE ERRORES -->
+            <div id="errorSummary" class="alert alert-danger mt-4 d-none rounded-4 shadow-sm">
+                <h6 class="fw-bold"><i class="bi bi-exclamation-triangle me-2"></i>Errores encontrados:</h6>
+                <ul class="mb-0"></ul>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="text-center mt-5">
+                <button type="submit"
+                        class="btn btn-gradient px-5 py-2 rounded-pill text-white shadow-sm fw-semibold ripple"
+                        style="background: linear-gradient(90deg, #6a11cb, #2575fc);">
+                    <i class="bi bi-check-circle me-2"></i>Guardar Cambios
+                </button>
+                <button type="button" id="btnCancelar"
+                        class="btn btn-outline-secondary px-5 py-2 rounded-pill ms-2 shadow-sm ripple">
+                    <i class="bi bi-x-circle me-2"></i>Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+
+<script>
+// =====================================
+// VALIDACIÓN EN TIEMPO REAL - EDITAR CUENTA
+// =====================================
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("formCuentaBancariaEdit");
+    const errorSummary = document.getElementById("errorSummary");
+    const btnCancelar = document.getElementById("btnCancelar");
+
+    if (!form) return;
+    form.setAttribute("novalidate", true);
+    form.querySelectorAll("input, select").forEach(c => c.addEventListener("invalid", e => e.preventDefault()));
+
+    const numero = document.getElementById("Numero_cuentaBancaria");
+    const saldo = document.getElementById("Saldo_cuentaBancaria");
+    const banco = document.getElementById("IDBanco");
+    const tipo = document.getElementById("IDtipoCuenta");
+
+    // ===== FUNCIONES AUXILIARES =====
+    function showError(el, msg) {
+        el.classList.add("is-invalid");
+        el.classList.remove("is-valid");
+        let fb = el.parentElement.querySelector(".invalid-feedback");
+        if (!fb) {
+            fb = document.createElement("div");
+            fb.classList.add("invalid-feedback", "d-block", "small");
+            el.parentElement.appendChild(fb);
+        }
+        fb.textContent = msg;
+    }
+
+    function clearError(el) {
+        el.classList.remove("is-invalid");
+        el.classList.add("is-valid");
+        const fb = el.parentElement.querySelector(".invalid-feedback");
+        if (fb) fb.textContent = "";
+    }
+
+    // ===== VALIDACIONES EN TIEMPO REAL =====
+    const regexCuenta = /^[0-9]{6,20}$/;
+
+    numero.addEventListener("input", () => {
+        const val = numero.value.trim();
+        if (!val) showError(numero, "Debe ingresar el número de cuenta.");
+        else if (!regexCuenta.test(val)) showError(numero, "Debe tener entre 6 y 20 dígitos numéricos.");
+        else clearError(numero);
+    });
+
+    saldo.addEventListener("input", () => {
+        const val = parseFloat(saldo.value);
+        if (isNaN(val) || val < 0) showError(saldo, "El saldo debe ser mayor o igual a Q0.00.");
+        else clearError(saldo);
+    });
+
+    banco.addEventListener("change", () => {
+        if (banco.value === "") showError(banco, "Debe seleccionar un banco.");
+        else clearError(banco);
+    });
+
+    tipo.addEventListener("change", () => {
+        if (tipo.value === "") showError(tipo, "Debe seleccionar un tipo de cuenta.");
+        else clearError(tipo);
+    });
+
+    // ===== VALIDACIÓN AL ENVIAR =====
+    form.addEventListener("submit", e => {
+        e.preventDefault();
+        let errores = [];
+
+        if (!regexCuenta.test(numero.value.trim()))
+            errores.push("Debe ingresar un número de cuenta válido.");
+        if (isNaN(parseFloat(saldo.value)) || parseFloat(saldo.value) < 0)
+            errores.push("Debe ingresar un saldo válido.");
+        if (banco.value === "")
+            errores.push("Debe seleccionar un banco.");
+        if (tipo.value === "")
+            errores.push("Debe seleccionar un tipo de cuenta.");
+
+        if (errores.length > 0) {
+            errorSummary.classList.remove("d-none");
+            errorSummary.querySelector("ul").innerHTML = errores.map(e => `<li>${e}</li>`).join("");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+        }
+
+        errorSummary.classList.add("d-none");
+        form.submit();
+    });
+
+    // ===== CANCELAR =====
+    btnCancelar.addEventListener("click", () => window.history.back());
+
+    // ===== EFECTO RIPPLE =====
+    document.querySelectorAll(".ripple").forEach(btn => {
+        btn.addEventListener("click", e => {
+            const circle = document.createElement("span");
+            const diameter = Math.max(btn.clientWidth, btn.clientHeight);
+            const rect = btn.getBoundingClientRect();
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${e.clientX - rect.left - diameter / 2}px`;
+            circle.style.top = `${e.clientY - rect.top - diameter / 2}px`;
+            circle.classList.add("ripple-effect");
+            const ripple = btn.getElementsByClassName("ripple-effect")[0];
+            if (ripple) ripple.remove();
+            btn.appendChild(circle);
+        });
+    });
+});
+</script>
+}

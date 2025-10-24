@@ -1,0 +1,305 @@
+@model declaracionPatrimonial.Models.cuentaBancaria
+
+@{
+    ViewData["Title"] = "Registrar Cuenta Bancaria";
+}
+
+<div class="container py-5">
+    <!-- ENCABEZADO -->
+    <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-4 border border-gray-100 p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold mb-1 text-gradient"
+                    style="background: linear-gradient(90deg, #6a11cb, #2575fc);
+                           -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Registrar Nueva Cuenta Bancaria
+                </h2>
+                <p class="text-muted mb-0">Completa todos los campos para agregar una cuenta de forma segura y validada.</p>
+            </div>
+            <a asp-action="Index" class="btn btn-outline-primary rounded-pill fw-semibold shadow-sm">
+                <i class="bi bi-arrow-left me-1"></i> Volver
+            </a>
+        </div>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="bg-white p-5 shadow-lg rounded-4 border-0">
+        <form asp-action="Create" method="post" autocomplete="off" id="formCuentaBancaria" novalidate>
+            @Html.AntiForgeryToken()
+
+            <div class="row g-4">
+
+                <!-- Número de cuenta -->
+                <div class="col-md-6">
+                    <label asp-for="Numero_cuentaBancaria" class="form-label fw-semibold">Número de cuenta</label>
+                    <input asp-for="Numero_cuentaBancaria"
+                           id="Numero_cuentaBancaria"
+                           class="form-control border-0 shadow-sm rounded-3 focus-ring"
+                           placeholder="Ej. 123456789012"
+                           minlength="6"
+                           maxlength="20"
+                           autocomplete="off" />
+                    <span class="invalid-feedback d-block small"></span>
+                </div>
+
+                <!-- Saldo disponible -->
+                <div class="col-md-6">
+                    <label asp-for="Saldo_cuentaBancaria" class="form-label fw-semibold">Saldo disponible (Q)</label>
+                    <input asp-for="Saldo_cuentaBancaria"
+                           id="Saldo_cuentaBancaria"
+                           class="form-control border-0 shadow-sm rounded-3 focus-ring"
+                           type="number"
+                           placeholder="Ej. 1500.00"
+                           min="0"
+                           step="0.01"
+                           autocomplete="off" />
+                    <span class="invalid-feedback d-block small"></span>
+                </div>
+
+                <!-- Banco -->
+                <div class="col-md-6">
+                    <label asp-for="IDBanco" class="form-label fw-semibold">Banco</label>
+                    <select asp-for="IDBanco"
+                            id="IDBanco"
+                            class="form-select border-0 shadow-sm rounded-3 focus-ring"
+                            asp-items="@(new SelectList(ViewBag.Bancos, "IDBanco", "Nombre_Banco"))">
+                        <option value="">Seleccione un banco</option>
+                    </select>
+                    <span class="invalid-feedback d-block small"></span>
+                </div>
+
+                <!-- Tipo de cuenta -->
+                <div class="col-md-6">
+                    <label asp-for="IDtipoCuenta" class="form-label fw-semibold">Tipo de cuenta</label>
+                    <select asp-for="IDtipoCuenta"
+                            id="IDtipoCuenta"
+                            class="form-select border-0 shadow-sm rounded-3 focus-ring"
+                            asp-items="@(new SelectList(ViewBag.TiposCuenta, "IDtipoCuenta", "Nombre_tipoCuenta"))">
+                        <option value="">Seleccione tipo de cuenta</option>
+                    </select>
+                    <span class="invalid-feedback d-block small"></span>
+                </div>
+            </div>
+
+            <!-- Resumen de errores -->
+            <div id="errorSummary" class="alert alert-danger mt-4 d-none rounded-4 shadow-sm">
+                <h6 class="fw-bold"><i class="bi bi-exclamation-triangle me-2"></i>Errores encontrados:</h6>
+                <ul class="mb-0"></ul>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="text-center mt-5">
+                <button type="submit"
+                        class="btn btn-gradient px-5 py-2 rounded-pill text-white shadow-sm fw-semibold ripple"
+                        style="background: linear-gradient(90deg, #6a11cb, #2575fc);">
+                    <i class="bi bi-check-circle me-2"></i>Guardar Cuenta
+                </button>
+                <button type="button"
+                        id="btnCancelar"
+                        class="btn btn-outline-secondary px-5 py-2 rounded-pill ms-2 shadow-sm ripple">
+                    <i class="bi bi-x-circle me-2"></i>Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL CONFIRMACIÓN -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0 text-white"
+                 style="background: linear-gradient(90deg, #6a11cb, #2575fc);">
+                <h5 class="modal-title fw-semibold"><i class="bi bi-check2-circle me-2"></i>Confirmación</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <p class="mb-3 fs-5"> La cuenta bancaria se ha registrado exitosamente.</p>
+                <button class="btn btn-gradient text-white px-4 rounded-pill" data-bs-dismiss="modal"
+                        style="background: linear-gradient(90deg, #6a11cb, #2575fc);">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CANCELAR -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0 bg-secondary text-white">
+                <h5 class="modal-title fw-semibold"><i class="bi bi-x-circle me-2"></i>Cancelar registro</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <p class="mb-3 fs-5">¿Seguro que deseas cancelar el registro?</p>
+                <a asp-action="Index" class="btn btn-danger px-4 rounded-pill text-white">Sí, cancelar</a>
+                <button class="btn btn-outline-secondary px-4 rounded-pill ms-2" data-bs-dismiss="modal">No, volver</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("formCuentaBancaria");
+    const errorSummary = document.getElementById("errorSummary");
+    const confirmModal = document.getElementById("confirmModal");
+    const cancelModal = document.getElementById("cancelModal");
+    const btnCancelar = document.getElementById("btnCancelar");
+
+    if (!form) return;
+
+    // DESACTIVAR VALIDACION HTML5
+    form.setAttribute("novalidate", true);
+    form.querySelectorAll("input, select").forEach(campo => {
+        campo.addEventListener("invalid", e => e.preventDefault());
+    });
+
+    // CAMPOS
+    const inputNumero = document.getElementById("Numero_cuentaBancaria");
+    const inputSaldo = document.getElementById("Saldo_cuentaBancaria");
+    const selectBanco = document.getElementById("IDBanco");
+    const selectTipoCuenta = document.getElementById("IDtipoCuenta");
+
+    // FUNCIONES AUXILIARES
+    function showError(element, message) {
+        element.classList.remove("is-valid");
+        element.classList.add("is-invalid");
+        let feedback = element.parentElement.querySelector(".invalid-feedback");
+        if (!feedback) {
+            feedback = document.createElement("div");
+            feedback.classList.add("invalid-feedback", "d-block", "small");
+            element.parentElement.appendChild(feedback);
+        }
+        feedback.textContent = message;
+    }
+
+    function clearError(element) {
+        element.classList.remove("is-invalid");
+        element.classList.add("is-valid");
+        const fb = element.parentElement.querySelector(".invalid-feedback");
+        if (fb) fb.textContent = "";
+    }
+
+    // VALIDACION EN TIEMPO REAL
+    inputNumero.addEventListener("input", () => {
+        const valor = inputNumero.value.trim();
+        const regex = /^[0-9]{6,20}$/;
+        if (!valor) {
+            showError(inputNumero, "Debe ingresar el número de cuenta.");
+        } else if (!regex.test(valor)) {
+            showError(inputNumero, "Número de cuenta debe tener 6-20 dígitos.");
+        } else {
+            clearError(inputNumero);
+        }
+    });
+
+    inputSaldo.addEventListener("input", () => {
+        const valor = parseFloat(inputSaldo.value);
+        if (isNaN(valor)) {
+            showError(inputSaldo, "Ingrese un saldo válido.");
+        } else if (valor <= 0) {
+            showError(inputSaldo, "El saldo debe ser mayor a Q0.00.");
+        } else if (!/^\d+(\.\d{1,2})?$/.test(inputSaldo.value.trim())) {
+            showError(inputSaldo, "El saldo solo puede tener hasta 2 decimales.");
+        } else if (valor > 1000000000) {
+            showError(inputSaldo, "El saldo no puede superar Q1,000,000,000.");
+        } else {
+            clearError(inputSaldo);
+        }
+    });
+
+    selectBanco.addEventListener("change", () => {
+        if (!selectBanco.value) {
+            showError(selectBanco, "Debe seleccionar un banco.");
+        } else {
+            clearError(selectBanco);
+        }
+    });
+
+    selectTipoCuenta.addEventListener("change", () => {
+        if (!selectTipoCuenta.value) {
+            showError(selectTipoCuenta, "Debe seleccionar un tipo de cuenta.");
+        } else {
+            clearError(selectTipoCuenta);
+        }
+    });
+
+    // VALIDACION FINAL (SUBMIT)
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        let errores = [];
+
+        // NUMERO DE CUENTA
+        const numero = inputNumero.value.trim();
+        const regexNumero = /^[0-9]{6,20}$/;
+        if (!numero) {
+            errores.push("Debe ingresar el número de cuenta.");
+            showError(inputNumero, "Debe ingresar el número de cuenta.");
+        } else if (!regexNumero.test(numero)) {
+            errores.push("Número de cuenta debe tener 6-20 dígitos.");
+            showError(inputNumero, "Número de cuenta debe tener 6-20 dígitos.");
+        }
+
+        // SALDO
+        const saldo = parseFloat(inputSaldo.value);
+        if (isNaN(saldo) || saldo <= 0) {
+            errores.push("Debe ingresar un saldo válido mayor a Q0.00.");
+            showError(inputSaldo, "Debe ingresar un saldo válido mayor a Q0.00.");
+        } else if (!/^\d+(\.\d{1,2})?$/.test(inputSaldo.value.trim())) {
+            errores.push("El saldo solo puede tener hasta 2 decimales.");
+            showError(inputSaldo, "El saldo solo puede tener hasta 2 decimales.");
+        } else if (saldo > 1000000000) {
+            errores.push("El saldo no puede superar Q1,000,000,000.");
+            showError(inputSaldo, "El saldo no puede superar Q1,000,000,000.");
+        }
+
+        // BANCO
+        if (!selectBanco.value) {
+            errores.push("Debe seleccionar un banco.");
+            showError(selectBanco, "Debe seleccionar un banco.");
+        }
+
+        // TIPO DE CUENTA
+        if (!selectTipoCuenta.value) {
+            errores.push("Debe seleccionar un tipo de cuenta.");
+            showError(selectTipoCuenta, "Debe seleccionar un tipo de cuenta.");
+        }
+
+        // RESUMEN DE ERRORES
+        if (errores.length > 0) {
+            if (errorSummary) {
+                errorSummary.classList.remove("d-none");
+                errorSummary.innerHTML = `<strong>Se encontraron los siguientes errores:</strong>
+                <ul class="mb-0 mt-2">${errores.map(e => `<li>${e}</li>`).join("")}</ul>`;
+            }
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+        }
+
+        if (errorSummary) errorSummary.classList.add("d-none");
+
+        // MODAL DE CONFIRMACION
+        const modal = new bootstrap.Modal(confirmModal);
+        modal.show();
+
+        setTimeout(() => form.submit(), 700);
+    });
+
+    // MODAL DE CANCELACION
+    if (btnCancelar && cancelModal) {
+        btnCancelar.addEventListener("click", () => {
+            const modal = new bootstrap.Modal(cancelModal);
+            modal.show();
+        });
+    }
+
+});
+</script>
+
+}

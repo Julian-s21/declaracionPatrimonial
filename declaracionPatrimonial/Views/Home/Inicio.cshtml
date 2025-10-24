@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="container my-5">
+
+    <!-- Hero Carousel Moderno -->
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+
+        <!-- Indicadores -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+        </div>
+
+        <!-- Slides -->
+        <div class="carousel-inner rounded shadow-lg overflow-hidden">
+
+            <!-- Slide 1 -->
+            <div class="carousel-item active">
+                <div class="position-relative">
+                    <img src="~/images/hero1.jpeg" class="d-block w-100 object-fit-cover" style="height: 500px;" alt="Noticia 1">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-25"></div>
+
+                    <!-- Card flotante -->
+                    <div class="position-absolute top-50 start-50 translate-middle p-4 bg-white rounded-4 shadow-lg carousel-caption text-start text-dark animate__animated animate__fadeIn">
+                        <h2 class="fw-bold mb-3">TSE coordina con representantes de partidos políticos la logística de las Elecciones Generales 2027</h2>
+                        <p class="mb-3">El Tribunal Supremo Electoral desarrolla reuniones técnicas con delegados de los partidos políticos, garantizando procesos transparentes y ordenados.</p>
+                        <a href="#" class="btn btn-primary btn-sm">Leer más</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <div class="position-relative">
+                    <img src="~/images/hero2.jpeg" class="d-block w-100 object-fit-cover" style="height: 500px;" alt="Noticia 2">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-25"></div>
+
+                    <div class="position-absolute top-50 start-50 translate-middle p-4 bg-white rounded-4 shadow-lg carousel-caption text-start text-dark animate__animated animate__fadeIn">
+                        <h2 class="fw-bold mb-3">Con fervor cívico, TSE realiza su antorcha institucional</h2>
+                        <p class="mb-3">En conmemoración de las fiestas patrias, el personal del TSE participó en la tradicional carrera de la antorcha, fortaleciendo los valores democráticos y ciudadanos.</p>
+                        <a href="#" class="btn btn-primary btn-sm">Leer más</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-item">
+                <div class="position-relative">
+                    <img src="~/images/hero3.jpg" class="d-block w-100 object-fit-cover" style="height: 500px;" alt="Noticia 3">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-25"></div>
+
+                    <div class="position-absolute top-50 start-50 translate-middle p-4 bg-white rounded-4 shadow-lg carousel-caption text-start text-dark animate__animated animate__fadeIn">
+                        <h2 class="fw-bold mb-3">TSE fortalece programas de educación cívica y participación ciudadana</h2>
+                        <p class="mb-3">La institución desarrolla capacitaciones y talleres en distintos departamentos, fomentando el compromiso ciudadano con la democracia.</p>
+                        <a href="#" class="btn btn-primary btn-sm">Leer más</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Controles -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+        </button>
+    </div>
+</div>
+
+<!-- Animaciones con Animate.css -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>

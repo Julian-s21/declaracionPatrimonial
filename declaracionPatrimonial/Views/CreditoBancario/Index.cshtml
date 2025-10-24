@@ -1,0 +1,307 @@
+@model List<declaracionPatrimonial.Models.creditoBancario>
+
+@{
+    ViewData["Title"] = "Créditos Bancarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    decimal totalCredito = Model?.Sum(c => c.Cantidad_AprobadaCredito) ?? 0;
+    int totalRegistros = Model?.Count ?? 0;
+    var usuario = Model?.FirstOrDefault()?.Usuario;
+}
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet" />
+
+<link href="https://unpkg.com/intro.js/minified/introjs.min.css" rel="stylesheet" />
+
+<div class="container py-5" style="font-family: 'Inter', sans-serif;">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a asp-controller="Home" asp-action="Index" class="text-decoration-none text-primary fw-semibold">
+                    <i class="bi bi-house-door me-1"></i> Inicio
+                </a>
+            </li>
+            <li class="breadcrumb-item active fw-semibold text-dark" aria-current="page">Créditos Bancarios</li>
+        </ol>
+    </nav>
+
+    <!-- Bienvenida -->
+    <div class="alert alert-light border-start border-4 border-primary shadow-sm rounded-4 mb-4 d-flex justify-content-between align-items-center flex-wrap">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-person-circle text-primary fs-3 me-3"></i>
+            <div>
+                <h5 class="mb-0 fw-semibold" style="font-family:'Poppins', sans-serif;">
+                    Bienvenido, @usuario?.Nombre_Usuario @usuario?.Apellido_Usuario
+                </h5>
+                <small class="text-muted">Gestiona tus créditos bancarios de forma rápida y segura.</small>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+            <button id="btnTour" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" title="Ver guía interactiva">
+                <i class="bi bi-info-circle me-1"></i> Guía
+            </button>
+            <a asp-controller="Usuario" asp-action="Logout" class="btn btn-light btn-sm" title="Cerrar sesión">
+                <i class="bi bi-box-arrow-right me-1"></i> Salir
+            </a>
+        </div>
+    </div>
+
+    <!-- Panel principal -->
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="card-header text-white py-4 px-4 d-flex justify-content-between align-items-center flex-wrap"
+             style="background: linear-gradient(90deg, #6a11cb, #2575fc);">
+            <h3 class="mb-0 fw-semibold d-flex align-items-center">
+                <i class="bi bi-credit-card-2-front me-2 fs-4"></i> Gestión de Créditos Bancarios
+            </h3>
+
+            <a asp-controller="CreditoBancario" asp-action="Create"
+               class="btn btn-light btn-sm fw-semibold shadow-sm px-3 mt-2 mt-md-0"
+               id="btnNuevoCredito" title="Registrar un nuevo crédito" role="button">
+                <i class="bi bi-plus-circle me-1"></i> Nuevo Crédito
+            </a>
+        </div>
+
+        <div class="card-body p-4 bg-light">
+
+            <!-- Filtros -->
+            <div class="row mb-4 g-3 align-items-end">
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label fw-semibold text-secondary">Buscar crédito</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <input type="text" id="searchInput"
+                               class="form-control border-start-0 shadow-sm"
+                               placeholder="Buscar por banco o motivo..." />
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-3">
+                    <label class="form-label fw-semibold text-secondary">Filtrar por Banco</label>
+                    <select id="filtroBanco" class="form-select shadow-sm">
+                        <option value="">Todos</option>
+                        @foreach (var banco in (Model ?? Enumerable.Empty<declaracionPatrimonial.Models.creditoBancario>())
+                            .Select(m => m.Banco?.Nombre_Banco)
+                            .Where(b => !string.IsNullOrEmpty(b))
+                            .Distinct())
+                        {
+                            <option value="@banco">@banco</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-lg-4 col-md-3">
+                    <label class="form-label fw-semibold text-secondary">Filtrar por Tipo de Cuenta</label>
+                    <select id="filtroTipo" class="form-select shadow-sm">
+                        <option value="">Todos</option>
+                        @foreach (var tipo in (Model ?? Enumerable.Empty<declaracionPatrimonial.Models.creditoBancario>())
+                            .Select(m => m.tipoCuenta?.Nombre_tipoCuenta)
+                            .Where(t => !string.IsNullOrEmpty(t))
+                            .Distinct())
+                        {
+                            <option value="@tipo">@tipo</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <!-- Resumen -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-5 mb-3 mb-md-0">
+                    <div class="bg-white p-3 rounded shadow-sm border-start border-4 border-primary text-center">
+                        <span class="fw-semibold text-muted me-2">
+                            <i class="bi bi-list-check me-1"></i> Total créditos:
+                        </span>
+                        <span class="fw-bold">@totalRegistros</span>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="bg-white p-3 rounded shadow-sm border-start border-4 border-success text-center">
+                        <span class="fw-semibold text-muted me-2">
+                            <i class="bi bi-cash-coin me-1"></i> Total aprobado:
+                        </span>
+                        <span class="fw-bold text-success">Q @totalCredito.ToString("N2")</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla -->
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle bg-white rounded-4 shadow-sm">
+                        <thead class="text-white text-center" style="background: linear-gradient(90deg, #6a11cb, #2575fc);">
+                            <tr>
+                                <th scope="col">Banco</th>
+                                <th scope="col">Tipo de Cuenta</th>
+                                <th scope="col">Cuenta Asociada</th>
+                                <th scope="col">Motivo</th>
+                                <th scope="col">Monto Aprobado (Q)</th>
+                                <th scope="col" class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var credito in Model)
+                            {
+                                <tr>
+                                    <td>@credito.Banco?.Nombre_Banco</td>
+                                    <td>@credito.tipoCuenta?.Nombre_tipoCuenta</td>
+                                    <td>@credito.cuentaBancaria?.Numero_cuentaBancaria</td>
+                                    <td>@credito.Motivo_creditoBancario</td>
+                                    <td class="text-success fw-bold">Q @credito.Cantidad_AprobadaCredito.ToString("N2")</td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <form asp-action="LoadEdit" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@credito.IDCreditoBancario" />
+                                                <button type="submit" class="btn btn-outline-success btn-sm rounded-circle shadow-sm" data-bs-toggle="tooltip" title="Editar crédito">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                            </form>
+
+                                            <form asp-action="DeleteConfirmed" method="post" class="d-inline" id="formEliminar-@credito.IDCreditoBancario">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@credito.IDCreditoBancario" />
+                                                <button type="button"
+                                                        onclick="confirmarEliminacion('formEliminar-@credito.IDCreditoBancario')"
+                                                        class="btn btn-outline-danger btn-sm rounded-circle shadow-sm"
+                                                        data-bs-toggle="tooltip" title="Eliminar crédito">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-info-circle text-primary fs-3"></i>
+                    <p class="mt-2 mb-0 text-muted fw-semibold">No hay créditos bancarios registrados.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Inicializar tooltips
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
+
+        // Filtros
+        const searchInput = document.getElementById('searchInput');
+        const filtroBanco = document.getElementById('filtroBanco');
+        const filtroTipo = document.getElementById('filtroTipo');
+
+        function filtrarTabla() {
+            const term = searchInput.value.toLowerCase();
+            const banco = filtroBanco.value.toLowerCase();
+            const tipo = filtroTipo.value.toLowerCase();
+
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const texto = row.textContent.toLowerCase();
+                const bancoFila = row.cells[0].textContent.toLowerCase();
+                const tipoFila = row.cells[1].textContent.toLowerCase();
+
+                const coincideBusqueda = texto.includes(term);
+                const coincideBanco = !banco || bancoFila === banco;
+                const coincideTipo = !tipo || tipoFila === tipo;
+
+                row.style.display = (coincideBusqueda && coincideBanco && coincideTipo) ? '' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input', () => setTimeout(filtrarTabla, 250));
+        filtroBanco.addEventListener('change', filtrarTabla);
+        filtroTipo.addEventListener('change', filtrarTabla);
+
+        // Confirmar eliminación
+        function confirmarEliminacion(formId) {
+            Swal.fire({
+                title: "¿Eliminar crédito?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#2575fc",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(formId).submit();
+                }
+            });
+        }
+
+        // Mostrar mensaje de exito
+        @if (TempData["MensajeExito"] != null)
+        {
+            <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Operación exitosa',
+                    text: '@TempData["MensajeExito"]',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </text>
+        }
+
+        // Tour interactivo con Intro.js
+        (() => {
+            const tourKey = 'creditos_tour_v1';
+            const pasos = [
+                {
+                    element: '#btnNuevoCredito',
+                    intro: 'Haz clic aquí para agregar un nuevo crédito bancario.',
+                    position: 'bottom'
+                },
+                {
+                    element: '#searchInput',
+                    intro: 'Usa esta barra para buscar créditos por banco o motivo.',
+                    position: 'right'
+                },
+                {
+                    element: 'table',
+                    intro: 'Aquí se muestran todos los créditos con opciones para editar o eliminar.',
+                    position: 'top'
+                }
+            ];
+
+            function iniciarTour() {
+                const intro = introJs();
+                intro.setOptions({
+                    steps: pasos,
+                    showProgress: true,
+                    exitOnEsc: true,
+                    exitOnOverlayClick: false,
+                    nextLabel: 'Siguiente',
+                    prevLabel: 'Atrás',
+                    doneLabel: 'Finalizar'
+                });
+
+                intro.oncomplete(() => localStorage.setItem(tourKey, 'done'));
+                intro.onexit(() => localStorage.setItem(tourKey, 'done'));
+                intro.start();
+            }
+
+            document.getElementById('btnTour')?.addEventListener('click', iniciarTour);
+
+            if (!localStorage.getItem(tourKey)) {
+                setTimeout(iniciarTour, 600);
+            }
+        })();
+    </script>
+}

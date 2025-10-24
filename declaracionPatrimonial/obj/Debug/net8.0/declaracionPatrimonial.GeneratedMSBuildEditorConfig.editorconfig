@@ -1,0 +1,123 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = declaracionPatrimonial
+build_property.RootNamespace = declaracionPatrimonial
+build_property.ProjectDir = C:\Users\JULIAN\Desktop\ProyectoAseguramiento\declaracionPatrimonial\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\JULIAN\Desktop\ProyectoAseguramiento\declaracionPatrimonial
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Bienes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmllbmVzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Bienes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmllbmVzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Bienes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmllbmVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/CreditoBancario/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3JlZGl0b0JhbmNhcmlvXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/CreditoBancario/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3JlZGl0b0JhbmNhcmlvXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/CreditoBancario/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3JlZGl0b0JhbmNhcmlvXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/cuentaBancaria/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcY3VlbnRhQmFuY2FyaWFcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/cuentaBancaria/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcY3VlbnRhQmFuY2FyaWFcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/cuentaBancaria/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcY3VlbnRhQmFuY2FyaWFcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Home/Inicio.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmljaW8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Home/Vista.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxWaXN0YS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/otroPasivo/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncb3Ryb1Bhc2l2b1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/otroPasivo/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncb3Ryb1Bhc2l2b1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/otroPasivo/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3Ncb3Ryb1Bhc2l2b1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Patrimonio/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0cmltb25pb1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Usuario/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Usuario/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JULIAN/Desktop/ProyectoAseguramiento/declaracionPatrimonial/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-4t8owshc6y
